@@ -1,0 +1,33 @@
+{
+  "name": "global-entry-appointment-notifier-aws",
+  "version": "1.0.0",
+  "engine": {
+    "node": "16.x"
+  },
+  "description": "",
+  "main": "api/handler.js",
+  "scripts": {
+    "fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.18.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "prettier": "^1.19.1",
+    "serverless-plugin-datadog": "^3.7.1"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1206.0",
+    "axios": "^0.27.2",
+    "dotenv": "^8.2.0",
+    "datadog": "^1.0.1",
+    "serverless-webpack": "^5.9.1",
+    "twilio": "^3.76.1"
+  }
+}

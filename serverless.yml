@@ -1,0 +1,40 @@
+org: ssmith353
+app: global-entry-appt-tracker
+service: global-entry-appt-tracker-api
+frameworkVersion: '3'
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: us-west-1
+  memorySize: 256
+  tags:
+    sls-app: ${self:app}
+    sls-service: ${self:service}
+  environment:
+    TWILIO_MESSAGE_SERVICE_ID: ${env:TWILIO_MESSAGE_SERVICE_ID}
+    TWILIO_SERVICE_ACCT_PHONE_NUMBER: ${env:TWILIO_SERVICE_ACCT_PHONE_NUMBER}
+    TWILIO_ACCOUNT_SID: ${env:TWILIO_ACCOUNT_SID}
+    TWILIO_AUTH_TOKEN: ${env:TWILIO_AUTH_TOKEN}
+    ALERT_PHONE_NUMBER: ${env:ALERT_PHONE_NUMBER}
+    APPOINTMENT_CENTER_ID: ${env:APPOINTMENT_CENTER_ID}
+
+functions:
+  checkApptStatus:
+    handler: api/checkApptStatus/index.fn
+    events:
+      - schedule:
+          name: fetch-global-entry-appts-${opt:stage, self:provider.stage}
+          description: 'Fetches global entry appointments every 15 minutes'
+          rate: rate(15 minutes)
+          enabled: true
+
+plugins:
+  - serverless-plugin-datadog
+
+custom:
+  datadog:
+    addExtension: true
+    apiKey: ${env:DATADOG_API_KEY}

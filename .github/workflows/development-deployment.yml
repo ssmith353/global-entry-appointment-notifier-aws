@@ -1,0 +1,39 @@
+name: Serverless Development Deployment
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      [master, dev]
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Run npm install
+        run: npm i --ignore-scripts
+
+      - name: Install Serverless CLI
+        run: npm i -g serverless
+
+      - name: Deploy Serverless App
+        run: sls deploy -s dev --verbose
+        env:
+          SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+          DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+          STAGE_ENV: dev
+          TWILIO_MESSAGE_SERVICE_ID: ${{ secrets.TWILIO_MESSAGE_SERVICE_ID }}
+          TWILIO_SERVICE_ACCT_PHONE_NUMBER: ${{ secrets.TWILIO_SERVICE_ACCT_PHONE_NUMBER }}
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          ALERT_PHONE_NUMBER: ${{ secrets.ALERT_PHONE_NUMBER }}
+          APPOINTMENT_CENTER_ID: ${{ secrets.APPOINTMENT_CENTER_ID }}
+
